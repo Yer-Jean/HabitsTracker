@@ -11,7 +11,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         superuser_email = os.getenv('SUPER_USER_EMAIL')
         # Проверка наличия суперпользователя с таким email
-        if User.objects.get(email=superuser_email):
+        if User.objects.filter(email=superuser_email):
             self.stdout.write(self.style.ERROR(f'Superuser with email "{superuser_email}" already exists.'))
             return
 
