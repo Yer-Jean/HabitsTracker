@@ -24,7 +24,8 @@ class Habit(models.Model):
     place = models.CharField(max_length=100, verbose_name='Place to action')
     time = models.TimeField(**NULLABLE, verbose_name='Time to action')
     duration = models.DurationField(default=timedelta(minutes=2), verbose_name='Duration of action')
-    periodicity = models.CharField(max_length=1, choices=PERIODICITY_CHOICES, default='0', verbose_name='Periodicity of action')
+    periodicity = models.CharField(max_length=1, choices=PERIODICITY_CHOICES, default='0',
+                                   verbose_name='Periodicity of action')
     reward = models.CharField(max_length=100, **NULLABLE)
     related_action = models.ForeignKey('self', on_delete=models.SET_NULL, verbose_name='Related action', **NULLABLE)
     is_pleasant = models.BooleanField(default=False)
