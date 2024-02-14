@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework_simplejwt',
+    'corsheaders',
 
     'habits',
     'users',
@@ -57,6 +58,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -152,3 +155,14 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
+
+# список источников, которым разрешено отправлять межсайтовые HTTP-запросы
+CORS_ALLOWED_ORIGINS = [
+    "https://read-only.example.com",  # здесь домены от фронтэнда
+    "https://read-and-write.example.com",
+]
+
+# список хостов, которые являются надежными источниками для небезопасных запросов (например POST)
+CSRF_TRUSTED_ORIGINS = [
+    "https://read-and-write.example.com",  # здесь домены от бэкэнда, которые нужно дублировать в CORS_ALLOWED_ORIGINS
+]
