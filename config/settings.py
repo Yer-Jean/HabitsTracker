@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+    'django_celery_beat',
+    'drf_yasg',
 
     'habits',
     'users',
@@ -180,10 +182,12 @@ CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 # CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
+CELERY_BEAT_PERIOD = 1    # Количество минут, через которое повторяется запуск задачи
+
 CELERY_BEAT_SCHEDULE = {
     'check_habits_reminder': {
         'task': 'habits.tasks.check_habits_reminder',
-        'schedule': timedelta(minutes=1),  # Проверка каждую минуту
+        'schedule': timedelta(minutes=CELERY_BEAT_PERIOD),
     },
 }
 
