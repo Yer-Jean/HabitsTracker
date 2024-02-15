@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+    'django_celery_beat',
+    'drf_yasg',
 
     'habits',
     'users',
@@ -166,3 +168,27 @@ CORS_ALLOWED_ORIGINS = [
 CSRF_TRUSTED_ORIGINS = [
     "https://read-and-write.example.com",  # здесь домены от бэкэнда, которые нужно дублировать в CORS_ALLOWED_ORIGINS
 ]
+
+# Настройки для Celery
+# URL-адрес брокера сообщений
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Например, Redis, который по умолчанию работает на порту 6379
+# URL-адрес брокера результатов, также Redis
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+# Часовой пояс для работы Celery
+CELERY_TIMEZONE = "Australia/Tasmania"
+# Флаг отслеживания выполнения задач
+CELERY_TASK_TRACK_STARTED = True
+# Максимальное время на выполнение задачи
+CELERY_TASK_TIME_LIMIT = 30 * 60
+# CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+CELERY_BEAT_PERIOD = 1    # Количество минут, через которое повторяется запуск задачи
+
+CELERY_BEAT_SCHEDULE = {
+    'check_habits_reminder': {
+        'task': 'habits.tasks.check_habits_reminder',
+        'schedule': timedelta(minutes=CELERY_BEAT_PERIOD),
+    },
+}
+
+TELEGRAM_API_TOKEN = os.getenv('TELEGRAM_API_TOKEN')
